@@ -1,31 +1,10 @@
-import RPi.GPIO as GPIO
+from gpiozero import LED, Button
+from signal import pause
 
-ledPin = 11    # define ledPin
-buttonPin = 12    # define buttonPin
+led = LED(17)
+button = Button(18)
 
-def setup():
+button.when_pressed = led.on
+button.when_released = led.off
 
- GPIO.setmode(GPIO.BOARD)      # use PHYSICAL GPIO Numbering
- GPIO.setup(ledPin, GPIO.OUT)   # set ledPin to OUTPUT mode
- GPIO.setup(buttonPin, GPIO.IN, pull_up_down=GPIO.PUD_UP)    # set buttonPin to PULL UP
-INPUT mode
-
-def loop():
- while True:
-  if GPIO.input(buttonPin)==GPIO.LOW: # if button is pressed
-   GPIO.output(ledPin,GPIO.HIGH)   # turn on led
-   print ('led turned on >>>')     # print information on terminal
-  else : # if button is relessed
-   GPIO.output(ledPin,GPIO.LOW) # turn off led
-   print ('led turned off <<<')
-
-def destroy():
- GPIO.cleanup()                     # Release GPIO resource
-
-if __name__ == '__main__':     # Program entrance
- print ('Program is starting...')
- setup()
- try:
-  loop()
- except KeyboardInterrupt:  # Press ctrl-c to end the program.
-  destroy() 
+pause()
